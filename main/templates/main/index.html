@@ -35,8 +35,8 @@
       dom +=
         "<div class='float-left list-grid' id='list-" + i + "'>" +
         "<h4>" + lists[i].title + "</h4>" +
-        "<div class='card-wrapper'>" +
-        "</div>" +
+        "<div class='card-wrapper'></div>" +
+        "<div class='add-card'>Add another card</div>" +
         "</div>";
     }
     $('.lists-wrapper').append(dom);
@@ -48,7 +48,7 @@
         card_id = cards_in_list[i][j];
         dom +=
           "<div class='card-grid' id='card-" + card_id + "'>" +
-          "<h5>" + cards[card_id].title + "</h5>" +
+          "<h5 class='card-title'>" + cards[card_id].title + "</h5>" +
           "</div>";
         var selector = "#list-" + i + ">.card-wrapper";
       }
@@ -57,5 +57,17 @@
   }
   printLists();
   printCards();
+
+  $( ".card-wrapper" ).sortable({
+    connectWith: ".card-wrapper",
+    handle: ".card-title",
+    cancel: ".card-title-toggle",
+    start: function (event, ui) {
+      ui.item.addClass('tilt');
+    },
+    stop: function (event, ui) {
+      ui.item.removeClass('tilt');
+    }
+  });
 </script>
 {% endblock %}

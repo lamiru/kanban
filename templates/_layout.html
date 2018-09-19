@@ -5,10 +5,12 @@
     <meta charset='utf8' />
     <meta content='width=device-width, initial-scale=1.0' name='viewport' />
     <link rel='stylesheet' href='//maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css' />
+    <link rel='stylesheet' href='//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css' />
     {% compress css %}
     <link type='text/x-sass' href='{% static "sass/main.sass" %}' rel='stylesheet' />
     {% endcompress %}
-    <script src='//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'></script>
+    <script src='//code.jquery.com/jquery-2.2.4.js'></script>
+    <script src='//code.jquery.com/ui/1.10.4/jquery-ui.js'></script>
     <script src='{% static "js/jquery-csrf.js" %}'></script>
     <script src='//maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js'></script>
     <title>Kanban</title>
