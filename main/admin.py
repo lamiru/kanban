@@ -22,7 +22,7 @@ admin.site.register(Card, CardAdmin)
 
 class CardsInListAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'cards_in_list',
+        'id', 'json_data',
         'created_at', 'updated_at',
     )
 

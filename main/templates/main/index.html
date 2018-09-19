@@ -30,13 +30,6 @@
     4: {"pk": 4, "username": "user4", "firstname": "User", "lastname": "4"},
     5: {"pk": 5, "username": "user5", "firstname": "User", "lastname": "5"}
   };
-  var cards_in_list = {
-    1: [1, 2, 3],
-    2: [4, 5, 6],
-    3: [7, 8, 9],
-    4: [10, 11, 12],
-    5: []
-  }
   var users_in_card = {
     1: [1, 2, 3],
     2: [4, 5],
@@ -91,36 +84,52 @@
       $(selector).append(dom);
     }
   }
-  printLists();
-  printCards();
-  printUsers();
+  function updateCardsInList() {
+    $.ajax({
+      method: 'POST',
+      url: '/api/cards_in_list/1/edit',
+      data: {'cards_in_list': JSON.stringify(cards_in_list)},
+      contentType: 'application/json'
+    }).done(function(data){
+    });
+  }
 
-  $( ".card-wrapper" ).sortable({
-    connectWith: ".card-wrapper",
-    handle: ".card-title",
-    cancel: ".card-title-toggle",
-    start: function (event, ui) {
-      ui.item.addClass('tilt');
-      var start_list_id = JSON.parse(JSON.stringify(ui.item.context.parentElement.parentElement.dataset)).listId;
-      var card_id = parseInt(JSON.parse(JSON.stringify(ui.item.context.dataset)).cardId);
-      var start_index = cards_in_list[start_list_id].indexOf(card_id);
-      ui.item.data('start_list_id', start_list_id);
-      ui.item.data('card_id', card_id);
-      ui.item.data('start_index', start_index);
-    },
-    stop: function (event, ui) {
-      ui.item.removeClass('tilt');
-      var stop_list_id = JSON.parse(JSON.stringify(ui.item.context.parentElement.parentElement.dataset)).listId;
-      if (ui.item.context.previousSibling === null) {
-        var stop_index = 0;
-      } else {
-        var pre_card_id = parseInt(JSON.parse(JSON.stringify(ui.item.context.previousSibling.dataset)).cardId);
-        var stop_index = cards_in_list[stop_list_id].indexOf(pre_card_id) + 1;
+  $.ajax({
+    method: 'GET',
+    url: '/api/cards_in_list/1'
+  }).done(function(data){
+    cards_in_list = data.cards_in_list;
+    printLists();
+    printCards();
+    printUsers();
+    $( ".card-wrapper" ).sortable({
+      connectWith: ".card-wrapper",
+      handle: ".card-title",
+      cancel: ".card-title-toggle",
+      start: function (event, ui) {
+        ui.item.addClass('tilt');
+        var start_list_id = JSON.parse(JSON.stringify(ui.item.context.parentElement.parentElement.dataset)).listId;
+        var card_id = parseInt(JSON.parse(JSON.stringify(ui.item.context.dataset)).cardId);
+        var start_index = cards_in_list[start_list_id].indexOf(card_id);
+        ui.item.data('start_list_id', start_list_id);
+        ui.item.data('card_id', card_id);
+        ui.item.data('start_index', start_index);
+      },
+      stop: function (event, ui) {
+        ui.item.removeClass('tilt');
+        var stop_list_id = JSON.parse(JSON.stringify(ui.item.context.parentElement.parentElement.dataset)).listId;
+        if (ui.item.context.previousSibling === null) {
+          var stop_index = 0;
+        } else {
+          var pre_card_id = parseInt(JSON.parse(JSON.stringify(ui.item.context.previousSibling.dataset)).cardId);
+          var stop_index = cards_in_list[stop_list_id].indexOf(pre_card_id) + 1;
+        }
+        cards_in_list[ui.item.data('start_list_id')].splice(ui.item.data('start_index'), 1);
+        cards_in_list[stop_list_id].splice(stop_index, 0, ui.item.data('card_id'));
+        console.log(cards_in_list);
+        updateCardsInList();
       }
-      cards_in_list[ui.item.data('start_list_id')].splice(ui.item.data('start_index'), 1);
-      cards_in_list[stop_list_id].splice(stop_index, 0, ui.item.data('card_id'));
-      console.log(cards_in_list);
-    }
+    });
   });
 </script>
 {% endblock %}

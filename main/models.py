@@ -21,7 +21,7 @@ class Card(models.Model):
 
 
 class CardsInList(models.Model):
-    cards_in_list = models.TextField(db_index=True)
+    json_data = models.TextField(db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
