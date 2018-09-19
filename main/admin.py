@@ -18,3 +18,12 @@ class CardAdmin(admin.ModelAdmin):
     )
 
 admin.site.register(Card, CardAdmin)
+
+
+class CardsInListAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'cards_in_list',
+        'created_at', 'updated_at',
+    )
+
+admin.site.register(CardsInList, CardsInListAdmin)

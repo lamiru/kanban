@@ -3,8 +3,6 @@
   fields:
     title: Card1
     contents: Card1...
-    list: 1
-    order: 1
     created_at: 2000-01-01T00:00:00+00:00
     updated_at: 2000-01-01T12:00:00+00:00
 - model: main.card
@@ -12,8 +10,6 @@
   fields:
     title: Card2
     contents: Card2...
-    list: 1
-    order: 2
     created_at: 2000-01-01T00:00:00+00:00
     updated_at: 2000-01-01T12:00:00+00:00
 - model: main.card
@@ -21,8 +17,6 @@
   fields:
     title: Card3
     contents: Card3...
-    list: 1
-    order: 3
     created_at: 2000-01-01T00:00:00+00:00
     updated_at: 2000-01-01T12:00:00+00:00
 - model: main.card
@@ -30,8 +24,6 @@
   fields:
     title: Card4
     contents: Card4...
-    list: 2
-    order: 1
     created_at: 2000-01-01T00:00:00+00:00
     updated_at: 2000-01-01T12:00:00+00:00
 - model: main.card
@@ -39,8 +31,6 @@
   fields:
     title: Card5
     contents: Card5...
-    list: 2
-    order: 2
     created_at: 2000-01-01T00:00:00+00:00
     updated_at: 2000-01-01T12:00:00+00:00
 - model: main.card
@@ -48,8 +38,6 @@
   fields:
     title: Card6
     contents: Card6...
-    list: 2
-    order: 3
     created_at: 2000-01-01T00:00:00+00:00
     updated_at: 2000-01-01T12:00:00+00:00
 - model: main.card
@@ -57,8 +45,6 @@
   fields:
     title: Card7
     contents: Card7...
-    list: 3
-    order: 1
     created_at: 2000-01-01T00:00:00+00:00
     updated_at: 2000-01-01T12:00:00+00:00
 - model: main.card
@@ -66,8 +52,6 @@
   fields:
     title: Card8
     contents: Card8...
-    list: 3
-    order: 2
     created_at: 2000-01-01T00:00:00+00:00
     updated_at: 2000-01-01T12:00:00+00:00
 - model: main.card
@@ -75,8 +59,6 @@
   fields:
     title: Card9
     contents: Card9...
-    list: 3
-    order: 3
     created_at: 2000-01-01T00:00:00+00:00
     updated_at: 2000-01-01T12:00:00+00:00
 - model: main.card
@@ -84,8 +66,6 @@
   fields:
     title: Card10
     contents: Card10...
-    list: 4
-    order: 1
     created_at: 2000-01-01T00:00:00+00:00
     updated_at: 2000-01-01T12:00:00+00:00
 - model: main.card
@@ -93,8 +73,6 @@
   fields:
     title: Card11
     contents: Card11...
-    list: 4
-    order: 2
     created_at: 2000-01-01T00:00:00+00:00
     updated_at: 2000-01-01T12:00:00+00:00
 - model: main.card
@@ -102,7 +80,5 @@
   fields:
     title: Card12
     contents: Card12...
-    list: 4
-    order: 3
     created_at: 2000-01-01T00:00:00+00:00
     updated_at: 2000-01-01T12:00:00+00:00
