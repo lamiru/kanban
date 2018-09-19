@@ -1,13 +1,36 @@
 {% extends "_layout.html" %}
 {% block content %}
-<h3>Hello World</h3>
+<section class='lists-wrapper'></section>
 <script>
+  function printLists(lists) {
+    var dom = '';
+    for (i in lists) {
+      dom +=
+        "<div class='float-left list-grid' id='list-" + lists[i].pk + "'>" +
+        "<h4>" + lists[i].fields.title + "</h4>" +
+        "<div class='card-wrapper'>" +
+        "</div>" +
+        "</div>";
+    }
+    $('.lists-wrapper').append(dom);
+  }
+  function printCards(cards) {
+    for (i in cards) {
+      var dom =
+        "<div class='card-grid' id='card-" + cards[i].pk + "'>" +
+        "<h5>" + cards[i].fields.title + "</h5>" +
+        "</div>";
+      var selector = "#list-" + cards[i].fields.list + ">.card-wrapper";
+      $(selector).append(dom);
+    }
+  }
   $.ajax({
     method: 'POST',
     url: '{% url "api:items" %}',
     dataType: 'json'
   }).done(function(data){
-    console.log(data);
+    printLists(data['lists']);
+    printCards(data['cards']);
   });
 </script>
 {% endblock %}

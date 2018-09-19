@@ -5,9 +5,18 @@ from django.shortcuts import render
 from main.models import *
 
 
-# Create your views here.
 def items(request):
     list_json = json.loads(serialize('json', List.objects.all()))
     card_json = json.loads(serialize('json', Card.objects.all()))
 
-    return JsonResponse({'list': list_json, 'card': card_json})
+    return JsonResponse({'lists': list_json, 'cards': card_json})
+
+def lists(request):
+    list_json = json.loads(serialize('json', List.objects.all()))
+
+    return JsonResponse({'lists': list_json})
+
+def cards_in_list(request, pk):
+    card_json = json.loads(serialize('json', Card.objects.filter(list=pk)))
+
+    return JsonResponse({'cards': card_json})
