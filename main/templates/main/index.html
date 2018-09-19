@@ -2,35 +2,60 @@
 {% block content %}
 <section class='lists-wrapper'></section>
 <script>
-  function printLists(lists) {
+  var lists = {
+    1: {"pk": 1, "title": "Up Next", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
+    2: {"pk": 2, "title": "In Progress", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
+    3: {"pk": 3, "title": "On Hold", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
+    4: {"pk": 4, "title": "Testing", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
+    5: {"pk": 5, "title": "Done", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"}
+  };
+  var cards = {
+    1: {"pk": 1, "title": "Card1", "contents": "Card1...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
+    2: {"pk": 2, "title": "Card2", "contents": "Card2...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
+    3: {"pk": 3, "title": "Card3", "contents": "Card3...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
+    4: {"pk": 4, "title": "Card4", "contents": "Card4...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
+    5: {"pk": 5, "title": "Card5", "contents": "Card5...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
+    6: {"pk": 6, "title": "Card6", "contents": "Card6...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
+    7: {"pk": 7, "title": "Card7", "contents": "Card7...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
+    8: {"pk": 8, "title": "Card8", "contents": "Card8...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
+    9: {"pk": 9, "title": "Card9", "contents": "Card9...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
+    10: {"pk": 10, "title": "Card10", "contents": "Card10...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
+    11: {"pk": 11, "title": "Card11", "contents": "Card11...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
+    12: {"pk": 12, "title": "Card12", "contents": "Card12...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
+  };
+  var cards_in_list = {
+    1: [1, 2, 3],
+    2: [4, 5, 6],
+    3: [7, 8, 9],
+    4: [10, 11, 12],
+  }
+  function printLists() {
     var dom = '';
     for (i in lists) {
       dom +=
-        "<div class='float-left list-grid' id='list-" + lists[i].pk + "'>" +
-        "<h4>" + lists[i].fields.title + "</h4>" +
+        "<div class='float-left list-grid' id='list-" + i + "'>" +
+        "<h4>" + lists[i].title + "</h4>" +
         "<div class='card-wrapper'>" +
         "</div>" +
         "</div>";
     }
     $('.lists-wrapper').append(dom);
   }
-  function printCards(cards) {
-    for (i in cards) {
-      var dom =
-        "<div class='card-grid' id='card-" + cards[i].pk + "'>" +
-        "<h5>" + cards[i].fields.title + "</h5>" +
-        "</div>";
-      var selector = "#list-" + cards[i].fields.list + ">.card-wrapper";
+  function printCards() {
+    for (i in cards_in_list) {
+      dom = '';
+      for (j in cards_in_list[i]) {
+        card_id = cards_in_list[i][j];
+        dom +=
+          "<div class='card-grid' id='card-" + card_id + "'>" +
+          "<h5>" + cards[card_id].title + "</h5>" +
+          "</div>";
+        var selector = "#list-" + i + ">.card-wrapper";
+      }
       $(selector).append(dom);
     }
   }
-  $.ajax({
-    method: 'POST',
-    url: '{% url "api:items" %}',
-    dataType: 'json'
-  }).done(function(data){
-    printLists(data['lists']);
-    printCards(data['cards']);
-  });
+  printLists();
+  printCards();
 </script>
 {% endblock %}
