@@ -13,7 +13,7 @@ admin.site.register(List, ListAdmin)
 
 class CardAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'title', 'contents', 'list', 'order',
+        'id', 'title', 'contents',
         'created_at', 'updated_at',
     )
 
