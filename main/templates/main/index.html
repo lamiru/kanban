@@ -28,12 +28,13 @@
     2: [4, 5, 6],
     3: [7, 8, 9],
     4: [10, 11, 12],
+    5: []
   }
   function printLists() {
     var dom = '';
     for (i in lists) {
       dom +=
-        "<div class='float-left list-grid' id='list-" + i + "'>" +
+        "<div class='float-left list-grid' id='list-" + i + "' data-list-id='" + i + "'>" +
         "<h4>" + lists[i].title + "</h4>" +
         "<div class='card-wrapper'></div>" +
         "<div class='add-card'>Add another card</div>" +
@@ -47,7 +48,7 @@
       for (j in cards_in_list[i]) {
         card_id = cards_in_list[i][j];
         dom +=
-          "<div class='card-grid' id='card-" + card_id + "'>" +
+          "<div class='card-grid' id='card-" + card_id + "' data-card-id='" + card_id + "'>" +
           "<h5 class='card-title'>" + cards[card_id].title + "</h5>" +
           "</div>";
         var selector = "#list-" + i + ">.card-wrapper";
@@ -64,9 +65,25 @@
     cancel: ".card-title-toggle",
     start: function (event, ui) {
       ui.item.addClass('tilt');
+      var start_list_id = JSON.parse(JSON.stringify(ui.item.context.parentElement.parentElement.dataset)).listId;
+      var card_id = parseInt(JSON.parse(JSON.stringify(ui.item.context.dataset)).cardId);
+      var start_index = cards_in_list[start_list_id].indexOf(card_id);
+      ui.item.data('start_list_id', start_list_id);
+      ui.item.data('card_id', card_id);
+      ui.item.data('start_index', start_index);
     },
     stop: function (event, ui) {
       ui.item.removeClass('tilt');
+      var stop_list_id = JSON.parse(JSON.stringify(ui.item.context.parentElement.parentElement.dataset)).listId;
+      if (ui.item.context.previousSibling === null) {
+        var stop_index = 0;
+      } else {
+        var pre_card_id = parseInt(JSON.parse(JSON.stringify(ui.item.context.previousSibling.dataset)).cardId);
+        var stop_index = cards_in_list[stop_list_id].indexOf(pre_card_id) + 1;
+      }
+      cards_in_list[ui.item.data('start_list_id')].splice(ui.item.data('start_index'), 1);
+      cards_in_list[stop_list_id].splice(stop_index, 0, ui.item.data('card_id'));
+      console.log(cards_in_list);
     }
   });
 </script>
