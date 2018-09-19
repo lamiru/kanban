@@ -1,0 +1,30 @@
+- model: main.list
+  pk: 1
+  fields:
+    title: Up Next
+    created_at: 2000-01-01T00:00:00+00:00
+    updated_at: 2000-01-01T12:00:00+00:00
+- model: main.list
+  pk: 2
+  fields:
+    title: In Progress
+    created_at: 2000-01-01T00:00:00+00:00
+    updated_at: 2000-01-01T12:00:00+00:00
+- model: main.list
+  pk: 3
+  fields:
+    title: On Hold
+    created_at: 2000-01-01T00:00:00+00:00
+    updated_at: 2000-01-01T12:00:00+00:00
+- model: main.list
+  pk: 4
+  fields:
+    title: Testing
+    created_at: 2000-01-01T00:00:00+00:00
+    updated_at: 2000-01-01T12:00:00+00:00
+- model: main.list
+  pk: 5
+  fields:
+    title: Done
+    created_at: 2000-01-01T00:00:00+00:00
+    updated_at: 2000-01-01T12:00:00+00:00
