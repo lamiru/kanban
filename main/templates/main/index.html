@@ -23,12 +23,33 @@
     11: {"pk": 11, "title": "Card11", "contents": "Card11...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
     12: {"pk": 12, "title": "Card12", "contents": "Card12...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
   };
+  var users = {
+    1: {"pk": 1, "username": "user1", "firstname": "User", "lastname": "1"},
+    2: {"pk": 2, "username": "user2", "firstname": "User", "lastname": "2"},
+    3: {"pk": 3, "username": "user3", "firstname": "User", "lastname": "3"},
+    4: {"pk": 4, "username": "user4", "firstname": "User", "lastname": "4"},
+    5: {"pk": 5, "username": "user5", "firstname": "User", "lastname": "5"}
+  };
   var cards_in_list = {
     1: [1, 2, 3],
     2: [4, 5, 6],
     3: [7, 8, 9],
     4: [10, 11, 12],
     5: []
+  }
+  var users_in_card = {
+    1: [1, 2, 3],
+    2: [4, 5],
+    3: [1, 2, 4],
+    4: [1, 5],
+    5: [],
+    6: [1, 5],
+    7: [4, 1],
+    8: [5, 4],
+    9: [4, 1, 2, 3],
+    10: [1, 4],
+    11: [3, 2, 5],
+    12: []
   }
   function printLists() {
     var dom = '';
@@ -50,14 +71,29 @@
         dom +=
           "<div class='card-grid' id='card-" + card_id + "' data-card-id='" + card_id + "'>" +
           "<h5 class='card-title'>" + cards[card_id].title + "</h5>" +
+          "<div class='user-wrapper'></div>" +
+          "<div class='clearfix'></div>" +
           "</div>";
         var selector = "#list-" + i + ">.card-wrapper";
       }
       $(selector).append(dom);
     }
   }
+  function printUsers() {
+    for (i in users_in_card) {
+      dom = '';
+      for (j in users_in_card[i]) {
+        user_id = users_in_card[i][j];
+        dom +=
+          "<div class='float-right user-grid'>" + users[user_id].lastname + "</div>";
+        var selector = "#card-" + i + ">.user-wrapper"
+      }
+      $(selector).append(dom);
+    }
+  }
   printLists();
   printCards();
+  printUsers();
 
   $( ".card-wrapper" ).sortable({
     connectWith: ".card-wrapper",
