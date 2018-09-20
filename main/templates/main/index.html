@@ -7,13 +7,6 @@
   var lists;
   var cards;
   var user;
-  // var users = {
-  //   1: {"pk": 1, "username": "user1", "firstname": "User", "lastname": "1"},
-  //   2: {"pk": 2, "username": "user2", "firstname": "User", "lastname": "2"},
-  //   3: {"pk": 3, "username": "user3", "firstname": "User", "lastname": "3"},
-  //   4: {"pk": 4, "username": "user4", "firstname": "User", "lastname": "4"},
-  //   5: {"pk": 5, "username": "user5", "firstname": "User", "lastname": "5"}
-  // };
   var users_in_card = {
     1: [1, 2, 3],
     2: [4, 5],
@@ -135,11 +128,12 @@
           var stop_list_id = JSON.parse(JSON.stringify(ui.item.context.parentElement.parentElement.dataset)).listId;
           if (ui.item.context.previousSibling === null) {
             var stop_index = 0;
+            cards_in_list[ui.item.data('start_list_id')].splice(ui.item.data('start_index'), 1);
           } else {
             var pre_card_id = parseInt(JSON.parse(JSON.stringify(ui.item.context.previousSibling.dataset)).cardId);
+            cards_in_list[ui.item.data('start_list_id')].splice(ui.item.data('start_index'), 1);
             var stop_index = cards_in_list[stop_list_id].indexOf(pre_card_id) + 1;
           }
-          cards_in_list[ui.item.data('start_list_id')].splice(ui.item.data('start_index'), 1);
           cards_in_list[stop_list_id].splice(stop_index, 0, ui.item.data('card_id'));
           console.log(cards_in_list);
           updateCardsInList();
