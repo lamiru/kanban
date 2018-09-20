@@ -1,6 +1,6 @@
 {% extends "_layout.html" %}
 {% block content %}
-<section class='lists-wrapper'></section>
+<section class='list-wrapper'></section>
 <script>
   var lists = {
     1: {"pk": 1, "title": "Up Next", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
@@ -49,12 +49,12 @@
     for (i in lists) {
       dom +=
         "<div class='float-left list-grid' id='list-" + i + "' data-list-id='" + i + "'>" +
-        "<h4>" + lists[i].title + "</h4>" +
+        "<h4 class='list-title'>" + lists[i].title + "</h4>" +
         "<div class='card-wrapper'></div>" +
         "<div class='add-card'>Add another card</div>" +
         "</div>";
     }
-    $('.lists-wrapper').append(dom);
+    $('.list-wrapper').append(dom);
   }
   function printCards() {
     for (i in cards_in_list) {
@@ -102,6 +102,17 @@
     printLists();
     printCards();
     printUsers();
+    $( ".list-wrapper" ).sortable({
+      connectWith: ".list-wrapper",
+      handle: ".list-title",
+      cancel: ".list-title-toggle",
+      start: function (event, ui) {
+        ui.item.addClass('tilt');
+      },
+      stop: function (event, ui) {
+        ui.item.removeClass('tilt');
+      }
+    });
     $( ".card-wrapper" ).sortable({
       connectWith: ".card-wrapper",
       handle: ".card-title",
