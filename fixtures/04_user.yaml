@@ -1,0 +1,66 @@
+- model: auth.user
+  pk: 1
+  fields:
+    username: admin
+    password: pbkdf2_sha256$36000$PqfxixFAmZAe$ozWwS9LrA2pHdHCUljAF6kI/WNL5+Z8GM8EwhcogcOY= # password2
+    first_name: Admin
+    last_name: A
+    is_superuser: 1
+    is_staff: 1
+    is_active: 1
+    date_joined: 2000-01-01T00:00:00+00:00
+- model: auth.user
+  pk: 2
+  fields:
+    username: user1
+    password: pbkdf2_sha256$36000$PqfxixFAmZAe$ozWwS9LrA2pHdHCUljAF6kI/WNL5+Z8GM8EwhcogcOY= # password2
+    first_name: User
+    last_name: 1
+    is_superuser: 0
+    is_staff: 0
+    is_active: 1
+    date_joined: 2000-01-01T00:00:00+00:00
+- model: auth.user
+  pk: 3
+  fields:
+    username: user2
+    password: pbkdf2_sha256$36000$PqfxixFAmZAe$ozWwS9LrA2pHdHCUljAF6kI/WNL5+Z8GM8EwhcogcOY= # password2
+    first_name: User
+    last_name: 2
+    is_superuser: 0
+    is_staff: 0
+    is_active: 1
+    date_joined: 2000-01-01T00:00:00+00:00
+- model: auth.user
+  pk: 4
+  fields:
+    username: user3
+    password: pbkdf2_sha256$36000$PqfxixFAmZAe$ozWwS9LrA2pHdHCUljAF6kI/WNL5+Z8GM8EwhcogcOY= # password2
+    first_name: User
+    last_name: 3
+    is_superuser: 0
+    is_staff: 0
+    is_active: 1
+    date_joined: 2000-01-01T00:00:00+00:00
+- model: auth.user
+  pk: 5
+  fields:
+    username: user4
+    password: pbkdf2_sha256$36000$PqfxixFAmZAe$ozWwS9LrA2pHdHCUljAF6kI/WNL5+Z8GM8EwhcogcOY= # password2
+    first_name: User
+    last_name: 4
+    is_superuser: 0
+    is_staff: 0
+    is_active: 1
+    date_joined: 2000-01-01T00:00:00+00:00
+- model: auth.user
+  pk: 6
+  fields:
+    username: user5
+    password: pbkdf2_sha256$36000$PqfxixFAmZAe$ozWwS9LrA2pHdHCUljAF6kI/WNL5+Z8GM8EwhcogcOY= # password2
+    first_name: User
+    last_name: 5
+    is_superuser: 0
+    is_staff: 0
+    is_active: 1
+    date_joined: 2000-01-01T00:00:00+00:00

@@ -4,44 +4,26 @@
 <script>
   var cards_in_list;
   var list_order;
-  var lists = {
-    1: {"pk": 1, "title": "Up Next", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
-    2: {"pk": 2, "title": "In Progress", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
-    3: {"pk": 3, "title": "On Hold", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
-    4: {"pk": 4, "title": "Testing", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
-    5: {"pk": 5, "title": "Done", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"}
-  };
-  var cards = {
-    1: {"pk": 1, "title": "Card1", "contents": "Card1...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
-    2: {"pk": 2, "title": "Card2", "contents": "Card2...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
-    3: {"pk": 3, "title": "Card3", "contents": "Card3...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
-    4: {"pk": 4, "title": "Card4", "contents": "Card4...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
-    5: {"pk": 5, "title": "Card5", "contents": "Card5...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
-    6: {"pk": 6, "title": "Card6", "contents": "Card6...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
-    7: {"pk": 7, "title": "Card7", "contents": "Card7...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
-    8: {"pk": 8, "title": "Card8", "contents": "Card8...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
-    9: {"pk": 9, "title": "Card9", "contents": "Card9...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
-    10: {"pk": 10, "title": "Card10", "contents": "Card10...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
-    11: {"pk": 11, "title": "Card11", "contents": "Card11...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
-    12: {"pk": 12, "title": "Card12", "contents": "Card12...", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
-  };
-  var users = {
-    1: {"pk": 1, "username": "user1", "firstname": "User", "lastname": "1"},
-    2: {"pk": 2, "username": "user2", "firstname": "User", "lastname": "2"},
-    3: {"pk": 3, "username": "user3", "firstname": "User", "lastname": "3"},
-    4: {"pk": 4, "username": "user4", "firstname": "User", "lastname": "4"},
-    5: {"pk": 5, "username": "user5", "firstname": "User", "lastname": "5"}
-  };
+  var lists;
+  var cards;
+  var user;
+  // var users = {
+  //   1: {"pk": 1, "username": "user1", "firstname": "User", "lastname": "1"},
+  //   2: {"pk": 2, "username": "user2", "firstname": "User", "lastname": "2"},
+  //   3: {"pk": 3, "username": "user3", "firstname": "User", "lastname": "3"},
+  //   4: {"pk": 4, "username": "user4", "firstname": "User", "lastname": "4"},
+  //   5: {"pk": 5, "username": "user5", "firstname": "User", "lastname": "5"}
+  // };
   var users_in_card = {
     1: [1, 2, 3],
     2: [4, 5],
-    3: [1, 2, 4],
+    3: [1, 6, 4],
     4: [1, 5],
     5: [],
     6: [1, 5],
-    7: [4, 1],
+    7: [4, 6],
     8: [5, 4],
-    9: [4, 1, 2, 3],
+    9: [4, 1, 2, 6],
     10: [1, 4],
     11: [3, 2, 5],
     12: []
@@ -81,7 +63,7 @@
       for (j in users_in_card[i]) {
         user_id = users_in_card[i][j];
         dom +=
-          "<div class='float-right user-grid'>" + users[user_id].lastname + "</div>";
+          "<div class='float-right user-grid'>" + users[user_id].last_name + "</div>";
         var selector = "#card-" + i + ">.user-wrapper"
       }
       $(selector).append(dom);
@@ -99,70 +81,80 @@
     }).done(function(data){
     });
   }
-
+  function renderItems() {
+    $.ajax({
+      method: 'GET',
+      url: '/api/list_card_order/1'
+    }).done(function(data){
+      cards_in_list = data.cards_in_list;
+      list_order = data.list_order;
+      printLists();
+      printCards();
+      printUsers();
+      $( ".list-wrapper" ).sortable({
+        connectWith: ".list-wrapper",
+        handle: ".list-title",
+        cancel: ".list-title-toggle",
+        start: function (event, ui) {
+          ui.item.addClass('tilt');
+          var list_id = parseInt(JSON.parse(JSON.stringify(ui.item.context.dataset)).listId);
+          var start_index = list_order.indexOf(list_id);
+          ui.item.data('list_id', list_id);
+          ui.item.data('start_index', start_index);
+        },
+        stop: function (event, ui) {
+          ui.item.removeClass('tilt');
+          if (ui.item.context.previousSibling === null) {
+            var stop_index = 0;
+            list_order.splice(ui.item.data('start_index'), 1);
+          } else {
+            var pre_list_id = parseInt(JSON.parse(JSON.stringify(ui.item.context.previousSibling.dataset)).listId);
+            list_order.splice(ui.item.data('start_index'), 1);
+            var stop_index = list_order.indexOf(pre_list_id) + 1;
+          }
+          list_order.splice(stop_index, 0, ui.item.data('list_id'));
+          console.log(list_order);
+          updateCardsInList();
+        }
+      });
+      $( ".card-wrapper" ).sortable({
+        connectWith: ".card-wrapper",
+        handle: ".card-title",
+        cancel: ".card-title-toggle",
+        start: function (event, ui) {
+          ui.item.addClass('tilt');
+          var start_list_id = JSON.parse(JSON.stringify(ui.item.context.parentElement.parentElement.dataset)).listId;
+          var card_id = parseInt(JSON.parse(JSON.stringify(ui.item.context.dataset)).cardId);
+          var start_index = cards_in_list[start_list_id].indexOf(card_id);
+          ui.item.data('start_list_id', start_list_id);
+          ui.item.data('card_id', card_id);
+          ui.item.data('start_index', start_index);
+        },
+        stop: function (event, ui) {
+          ui.item.removeClass('tilt');
+          var stop_list_id = JSON.parse(JSON.stringify(ui.item.context.parentElement.parentElement.dataset)).listId;
+          if (ui.item.context.previousSibling === null) {
+            var stop_index = 0;
+          } else {
+            var pre_card_id = parseInt(JSON.parse(JSON.stringify(ui.item.context.previousSibling.dataset)).cardId);
+            var stop_index = cards_in_list[stop_list_id].indexOf(pre_card_id) + 1;
+          }
+          cards_in_list[ui.item.data('start_list_id')].splice(ui.item.data('start_index'), 1);
+          cards_in_list[stop_list_id].splice(stop_index, 0, ui.item.data('card_id'));
+          console.log(cards_in_list);
+          updateCardsInList();
+        }
+      });
+    });
+  }
   $.ajax({
     method: 'GET',
-    url: '/api/list_card_order/1'
+    url: '/api/items'
   }).done(function(data){
-    cards_in_list = data.cards_in_list;
-    list_order = data.list_order;
-    printLists();
-    printCards();
-    printUsers();
-    $( ".list-wrapper" ).sortable({
-      connectWith: ".list-wrapper",
-      handle: ".list-title",
-      cancel: ".list-title-toggle",
-      start: function (event, ui) {
-        ui.item.addClass('tilt');
-        var list_id = parseInt(JSON.parse(JSON.stringify(ui.item.context.dataset)).listId);
-        var start_index = list_order.indexOf(list_id);
-        ui.item.data('list_id', list_id);
-        ui.item.data('start_index', start_index);
-      },
-      stop: function (event, ui) {
-        ui.item.removeClass('tilt');
-        if (ui.item.context.previousSibling === null) {
-          var stop_index = 0;
-          list_order.splice(ui.item.data('start_index'), 1);
-        } else {
-          var pre_list_id = parseInt(JSON.parse(JSON.stringify(ui.item.context.previousSibling.dataset)).listId);
-          list_order.splice(ui.item.data('start_index'), 1);
-          var stop_index = list_order.indexOf(pre_list_id) + 1;
-        }
-        list_order.splice(stop_index, 0, ui.item.data('list_id'));
-        console.log(list_order);
-        updateCardsInList();
-      }
-    });
-    $( ".card-wrapper" ).sortable({
-      connectWith: ".card-wrapper",
-      handle: ".card-title",
-      cancel: ".card-title-toggle",
-      start: function (event, ui) {
-        ui.item.addClass('tilt');
-        var start_list_id = JSON.parse(JSON.stringify(ui.item.context.parentElement.parentElement.dataset)).listId;
-        var card_id = parseInt(JSON.parse(JSON.stringify(ui.item.context.dataset)).cardId);
-        var start_index = cards_in_list[start_list_id].indexOf(card_id);
-        ui.item.data('start_list_id', start_list_id);
-        ui.item.data('card_id', card_id);
-        ui.item.data('start_index', start_index);
-      },
-      stop: function (event, ui) {
-        ui.item.removeClass('tilt');
-        var stop_list_id = JSON.parse(JSON.stringify(ui.item.context.parentElement.parentElement.dataset)).listId;
-        if (ui.item.context.previousSibling === null) {
-          var stop_index = 0;
-        } else {
-          var pre_card_id = parseInt(JSON.parse(JSON.stringify(ui.item.context.previousSibling.dataset)).cardId);
-          var stop_index = cards_in_list[stop_list_id].indexOf(pre_card_id) + 1;
-        }
-        cards_in_list[ui.item.data('start_list_id')].splice(ui.item.data('start_index'), 1);
-        cards_in_list[stop_list_id].splice(stop_index, 0, ui.item.data('card_id'));
-        console.log(cards_in_list);
-        updateCardsInList();
-      }
-    });
+    lists = data.lists;
+    cards = data.cards;
+    users = data.users;
+    renderItems();
   });
 </script>
 {% endblock %}
