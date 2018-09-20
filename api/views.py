@@ -17,17 +17,20 @@ def lists(request):
 
     return JsonResponse({'lists': list_json})
 
-def cards_in_list(request, pk):
-    cards_in_list = get_object_or_404(CardsInList, pk=1)
-    cards_in_list = json.loads(cards_in_list.json_data)
-    return JsonResponse({'cards_in_list': cards_in_list})
+def list_card_order(request, pk):
+    list_card_order = get_object_or_404(ListCardOrder, pk=1)
+    cards_in_list = json.loads(list_card_order.cards_in_list)
+    list_order = json.loads(list_card_order.list_order)
+
+    return JsonResponse({'cards_in_list': cards_in_list, 'list_order': list_order})
 
 @csrf_exempt
-def edit_cards_in_list(request, pk):
+def edit_list_card_order(request, pk):
     if request.method == 'POST':
-        json_data = json.loads(json.dumps(QueryDict(request.body)))['cards_in_list']
-        cards_in_list = get_object_or_404(CardsInList, pk=1)
-        cards_in_list.json_data = json_data
-        cards_in_list.save()
+        list_card_order = get_object_or_404(ListCardOrder, pk=1)
+        list_card_order.cards_in_list = json.loads(json.dumps(QueryDict(request.body)))['cards_in_list']
+        list_card_order.list_order = json.loads(json.dumps(QueryDict(request.body)))['list_order']
+        print(request.body)
+        list_card_order.save()
         return JsonResponse({'data': 'success'})
     raise Http404()

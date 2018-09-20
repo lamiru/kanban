@@ -20,10 +20,10 @@ class CardAdmin(admin.ModelAdmin):
 admin.site.register(Card, CardAdmin)
 
 
-class CardsInListAdmin(admin.ModelAdmin):
+class ListCardOrderAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'json_data',
+        'id', 'cards_in_list', 'list_order',
         'created_at', 'updated_at',
     )
 
-admin.site.register(CardsInList, CardsInListAdmin)
+admin.site.register(ListCardOrder, ListCardOrderAdmin)

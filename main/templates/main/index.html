@@ -2,6 +2,8 @@
 {% block content %}
 <section class='list-wrapper'></section>
 <script>
+  var cards_in_list;
+  var list_order;
   var lists = {
     1: {"pk": 1, "title": "Up Next", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
     2: {"pk": 2, "title": "In Progress", "created_at": "2000-01-01T00:00:00Z", "updated_at": "2000-01-01T12:00:00Z"},
@@ -46,10 +48,11 @@
   }
   function printLists() {
     var dom = '';
-    for (i in lists) {
+    for (i in list_order) {
+      var k = list_order[i];
       dom +=
-        "<div class='float-left list-grid' id='list-" + i + "' data-list-id='" + i + "'>" +
-        "<h4 class='list-title'>" + lists[i].title + "</h4>" +
+        "<div class='float-left list-grid' id='list-" + k + "' data-list-id='" + k + "'>" +
+        "<h4 class='list-title'>" + lists[k].title + "</h4>" +
         "<div class='card-wrapper'></div>" +
         "<div class='add-card'>Add another card</div>" +
         "</div>";
@@ -87,8 +90,11 @@
   function updateCardsInList() {
     $.ajax({
       method: 'POST',
-      url: '/api/cards_in_list/1/edit',
-      data: {'cards_in_list': JSON.stringify(cards_in_list)},
+      url: '/api/list_card_order/1/edit',
+      data: {
+        'cards_in_list': JSON.stringify(cards_in_list),
+        'list_order': JSON.stringify(list_order)
+      },
       contentType: 'application/json'
     }).done(function(data){
     });
@@ -96,9 +102,10 @@
 
   $.ajax({
     method: 'GET',
-    url: '/api/cards_in_list/1'
+    url: '/api/list_card_order/1'
   }).done(function(data){
     cards_in_list = data.cards_in_list;
+    list_order = data.list_order;
     printLists();
     printCards();
     printUsers();
@@ -108,9 +115,24 @@
       cancel: ".list-title-toggle",
       start: function (event, ui) {
         ui.item.addClass('tilt');
+        var list_id = parseInt(JSON.parse(JSON.stringify(ui.item.context.dataset)).listId);
+        var start_index = list_order.indexOf(list_id);
+        ui.item.data('list_id', list_id);
+        ui.item.data('start_index', start_index);
       },
       stop: function (event, ui) {
         ui.item.removeClass('tilt');
+        if (ui.item.context.previousSibling === null) {
+          var stop_index = 0;
+          list_order.splice(ui.item.data('start_index'), 1);
+        } else {
+          var pre_list_id = parseInt(JSON.parse(JSON.stringify(ui.item.context.previousSibling.dataset)).listId);
+          list_order.splice(ui.item.data('start_index'), 1);
+          var stop_index = list_order.indexOf(pre_list_id) + 1;
+        }
+        list_order.splice(stop_index, 0, ui.item.data('list_id'));
+        console.log(list_order);
+        updateCardsInList();
       }
     });
     $( ".card-wrapper" ).sortable({

@@ -20,8 +20,9 @@ class Card(models.Model):
         return str(self.id)
 
 
-class CardsInList(models.Model):
-    json_data = models.TextField(db_index=True)
+class ListCardOrder(models.Model):
+    list_order = models.TextField(db_index=True)
+    cards_in_list = models.TextField(db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
