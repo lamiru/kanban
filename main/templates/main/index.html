@@ -27,9 +27,11 @@
       var k = list_order[i];
       dom +=
         "<div class='float-left list-grid' id='list-" + k + "' data-list-id='" + k + "'>" +
+        "<div class='list-move'>" +
         "<h4 class='list-title'>" + lists[k].title + "</h4>" +
         "<div class='card-wrapper'></div>" +
         "<div class='add-card'>Add another card</div>" +
+        "</div>" +
         "</div>";
     }
     $('.list-wrapper').append(dom);
@@ -41,11 +43,13 @@
         card_id = cards_in_list[i][j];
         dom +=
           "<div class='card-grid' id='card-" + card_id + "' data-card-id='" + card_id + "'>" +
+          "<div class='card-move'>" +
           "<h5 class='card-title'>" + cards[card_id].title + "</h5>" +
           "<div class='user-wrapper'></div>" +
           "<div class='clearfix'></div>" +
+          "</div>" +
           "</div>";
-        var selector = "#list-" + i + ">.card-wrapper";
+        var selector = "#list-" + i + " .card-wrapper";
       }
       $(selector).append(dom);
     }
@@ -57,7 +61,7 @@
         user_id = users_in_card[i][j];
         dom +=
           "<div class='float-right user-grid'>" + users[user_id].last_name + "</div>";
-        var selector = "#card-" + i + ">.user-wrapper"
+        var selector = "#card-" + i + " .user-wrapper"
       }
       $(selector).append(dom);
     }
@@ -86,8 +90,8 @@
       printUsers();
       $( ".list-wrapper" ).sortable({
         connectWith: ".list-wrapper",
-        handle: ".list-title",
-        cancel: ".list-title-toggle",
+        handle: ".list-move",
+        cancel: ".list-move-toggle",
         start: function (event, ui) {
           ui.item.addClass('tilt');
           var list_id = parseInt(JSON.parse(JSON.stringify(ui.item.context.dataset)).listId);
@@ -112,11 +116,11 @@
       });
       $( ".card-wrapper" ).sortable({
         connectWith: ".card-wrapper",
-        handle: ".card-title",
-        cancel: ".card-title-toggle",
+        handle: ".card-move",
+        cancel: ".card-move-toggle",
         start: function (event, ui) {
           ui.item.addClass('tilt');
-          var start_list_id = JSON.parse(JSON.stringify(ui.item.context.parentElement.parentElement.dataset)).listId;
+          var start_list_id = JSON.parse(JSON.stringify(ui.item.context.parentElement.parentElement.parentElement.dataset)).listId;
           var card_id = parseInt(JSON.parse(JSON.stringify(ui.item.context.dataset)).cardId);
           var start_index = cards_in_list[start_list_id].indexOf(card_id);
           ui.item.data('start_list_id', start_list_id);
@@ -125,7 +129,7 @@
         },
         stop: function (event, ui) {
           ui.item.removeClass('tilt');
-          var stop_list_id = JSON.parse(JSON.stringify(ui.item.context.parentElement.parentElement.dataset)).listId;
+          var stop_list_id = JSON.parse(JSON.stringify(ui.item.context.parentElement.parentElement.parentElement.dataset)).listId;
           if (ui.item.context.previousSibling === null) {
             var stop_index = 0;
             cards_in_list[ui.item.data('start_list_id')].splice(ui.item.data('start_index'), 1);
