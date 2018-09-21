@@ -1,10 +1,6 @@
 Kanban
 ===
 
-# Local Environment
-
-## How to install
-
 #### Repository Setting
 - `$ pip install -r requirements.txt`
 - `$ python manage.py makemigrations`
